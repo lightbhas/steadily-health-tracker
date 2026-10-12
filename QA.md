@@ -52,3 +52,16 @@ A physical iPhone was not available. Safari camera/HEIC decoding, Add to Home Sc
 GitHub deployment has not been run because no destination repository was supplied. The deployment workflow is included, relative paths were verified, and README.md gives exact publishing steps. Node’s native test runner and static build have no package dependencies.
 
 The browser checks above were performed interactively, not by a committed Playwright suite. `npm test` reruns the automated model and PWA tests; the browser verification is documented here for transparency.
+
+## Visual refinement — 12 October 2026
+
+This pass changes presentation and wording only. The data schema, IndexedDB implementation, timers, import/export handlers, original automated tests, offline service worker, and all tracking fields are retained. Manifest background/theme colors and the HTML theme color were updated to match the new palette; installability configuration and icons remain intact.
+
+- All 14 original automated tests passed; all three source modules passed syntax checks; production build passed.
+- Today, Trends, History, and Settings were checked at actual CSS content widths of 320, 360, 390, 430, and 1280 px. All 20 checks had document scroll width equal to viewport width.
+- All eight dashboard card titles and action buttons fit without overlapping at 320 px.
+- The meal dialog fit at 320 px and retained nutrition, photo attachment, favorite, description, portion, notes, date, and time controls.
+- Empty and logged hero messages were checked. A water quick-add in a separate development preview produced the lime ring, the correct 250 ml total, and “Logged — one step done.” Original browser data was not reset, imported over, or edited.
+- Key text/background contrast pairs measured 5.54:1 or better: body, muted text, buttons, active navigation, hero accent, and category accents. Forest body text on ivory measured 12.71:1; white primary-button text measured 6.73:1.
+- Visual inspection covered the mobile home screen, all tracking-card accents, and desktop layout. No browser error or warning logs appeared during the final responsive checks.
+- No GitHub push or deployment was performed. Physical iPhone/Safari testing remains a device follow-up.
