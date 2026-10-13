@@ -65,3 +65,13 @@ This pass changes presentation and wording only. The data schema, IndexedDB impl
 - Key text/background contrast pairs measured 5.54:1 or better: body, muted text, buttons, active navigation, hero accent, and category accents. Forest body text on ivory measured 12.71:1; white primary-button text measured 6.73:1.
 - Visual inspection covered the mobile home screen, all tracking-card accents, and desktop layout. No browser error or warning logs appeared during the final responsive checks.
 - No GitHub push or deployment was performed. Physical iPhone/Safari testing remains a device follow-up.
+
+## Mobile readability and navigation clearance — 13 October 2026
+
+- Mobile body/supporting text is 16 px, secondary labels/helpers at least 15 px, primary controls/input text 17 px, and card headings 20 px. Larger values stay prominent. Rem sizing follows larger browser default font preferences; text-size adjustment and pinch zoom remain enabled.
+- The navigation occupies its own persistent grid row below the scrollable main content. Main content is clipped to that separate viewport, with scroll clearance and safe-area margins, so intermediate cards cannot scroll beneath the tabs. Larger switches and wrapped controls retain at least 44 px tap targets.
+- At actual CSS widths 320, 375, 390, and 430 px, Today had no page or main-panel horizontal overflow. Navigation labels did not clip. The fasting action was fully inside the content viewport, its text was 17 px, its tap height was approximately 46 px, and its helper text was 15 px. The main viewport ended 10 px above the navigation box.
+- All four views at 320 px had no text below 15 px and no main-panel horizontal overflow. The 320 px meal dialog retained all fields, had no horizontal overflow, and used 17 px input text.
+- Clicking the hero meal action was checked after making the decorative illustration ignore pointer events. Water quick-add/undo in an isolated test origin retained the same main scroll position (approximately 1,962 px). Switching views reset the main scroll position to zero. Original device logs were untouched.
+- Desktop at 1280 px retained the existing layout, normal document scrolling, hidden mobile navigation, and no horizontal overflow.
+- The supplied message did not include an accessible screenshot attachment. Verification used the current app, its existing layout, and the described readability/overlap problem; no physical iPhone was available.

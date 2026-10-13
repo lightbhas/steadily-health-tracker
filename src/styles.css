@@ -328,3 +328,239 @@ select:focus-visible, textarea:focus-visible, .toggle-line input:focus-visible +
 .weight-numbers strong small, .food-editor legend,
 .trend-table tbody td, .trend-table thead { color: var(--muted); }
 .timer-banner .secondary { min-height: 44px; }
+
+/* Mobile readability and a reserved navigation row: no content scrolls behind the tabs. */
+@media (max-width: 700px) {
+  :root {
+    font-size: max(16px, 100%);
+    line-height: 1.5;
+    -webkit-text-size-adjust: auto;
+    text-size-adjust: auto;
+    --mobile-scroll-clearance: 28px;
+  }
+  #app {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+  }
+  #main {
+    min-height: 0;
+    min-width: 0;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 18px var(--mobile-scroll-clearance);
+    scroll-padding-top: 18px;
+    scroll-padding-bottom: var(--mobile-scroll-clearance);
+  }
+  #main button, #main input, #main select, #main textarea,
+  .meal-list, .trend-table-wrap, dialog {
+    scroll-margin-block: 18px var(--mobile-scroll-clearance);
+  }
+  .mobile-nav {
+    position: relative;
+    inset: auto;
+    margin: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+    padding: 8px 5px;
+    min-height: 80px;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    box-shadow: 0 3px 12px #17352D1A;
+  }
+  .mobile-nav button {
+    min-width: 0;
+    min-height: 60px;
+    flex: 1 1 0;
+    padding: 7px 2px;
+    font-size: .9375rem;
+    line-height: 1.4;
+    gap: 5px;
+  }
+  .mobile-nav .icon { width: 24px; height: 24px; }
+  .mobile-nav button span { overflow-wrap: anywhere; }
+
+  /* Rem-based type follows larger browser font preferences; zoom remains unrestricted. */
+  p, .muted, .card > p.muted, .settings-grid .card > p,
+  .page-heading p:not(.eyebrow), .hero-copy > p,
+  .empty-meals p, .area-microcopy, .note, .history-copy p,
+  .form-summary, .form-summary p, .install-list,
+  .food-choice, .food-choice strong, .meal-info strong {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  .source-label, .card .source-label, .settings-grid .card > p.source-label,
+  .eyebrow, .page-heading .eyebrow, .section-heading span,
+  .stat-card p, .date-picker, .local-badge, .topbar-motto,
+  .hero-tag, .hero > .hero-message, .score-ring small,
+  .consistency > .rhythm-count, .mini-stats span,
+  .water-visual p, .toggle-line small, .fast-status, .optional-tag,
+  .weight-numbers span:not(.weight-line), .chart-empty > span,
+  .reminder p, .history-date, .history-date small, .history-copy .eyebrow,
+  .history-filters > label, .settings-list, .settings-list dt,
+  .trend-metric > span, .trend-metric small, .week-rhythm,
+  .week-rhythm > div, .week-rhythm small, .day-circle small,
+  .fast-week, .checkpoint-grid p, .checkpoint-grid span,
+  .food-choice span, .food-editor legend, .meal-info span,
+  form label, .form-error, footer, #toast {
+    font-size: .9375rem;
+    line-height: 1.5;
+  }
+  .card-title h2, .section-heading h2, .rhythm-card h2,
+  .monthly-card h2, .settings-grid h2, .empty-meals h3,
+  .dialog-head h2 {
+    font-size: 1.25rem;
+    line-height: 1.4;
+    letter-spacing: -.3px;
+  }
+  .page-heading h1 { font-size: 1.875rem; line-height: 1.2; }
+  .page-heading { padding: 20px 0; gap: 14px; }
+  .page-heading .eyebrow { letter-spacing: .6px; }
+  .hero h2 { font-size: 1.5rem; line-height: 1.3; max-width: none; }
+  .topbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    height: auto;
+    min-height: 90px;
+    gap: 9px;
+    padding: 16px 0;
+  }
+  .topbar-identity { display: contents; }
+  .mobile-brand { grid-row: 1; grid-column: 1; font-size: 1.75rem; }
+  .topbar-motto { grid-row: 2; grid-column: 1 / -1; letter-spacing: .5px; }
+  .local-badge { grid-row: 1; grid-column: 2; padding: 7px; letter-spacing: 0; }
+  .local-badge .icon { width: 18px; height: 18px; }
+  .date-picker { flex-wrap: wrap; }
+  .date-picker input { font-size: 1.0625rem; max-width: 100%; width: 172px; }
+
+  .primary, .secondary, .text-button, .chip, .button,
+  .compact-action, .card-title > button, .card-title .compact-action,
+  .hero .primary, .water-card > .text-button,
+  .water-actions .secondary, .soft-banner > .text-button,
+  .review-buttons > .secondary, .review-buttons .secondary,
+  .timer-banner .secondary, .timer-banner .text-button {
+    min-height: 44px;
+    font-size: 1.0625rem;
+    line-height: 1.4;
+    white-space: normal;
+    padding: 10px 12px;
+    max-width: 100%;
+  }
+  form input:not([type=checkbox]), form select, form textarea,
+  .history-filters input, .history-filters select {
+    font-size: 1.0625rem;
+    line-height: 1.5;
+    min-height: 44px;
+  }
+  .card { padding: 20px; overflow: visible; }
+  .card-title { flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 14px; }
+  .card-title h2 { flex: 1 1 160px; min-width: 0; }
+  .card-title h2 .icon { width: 34px; height: 34px; padding: 7px; align-self: flex-start; }
+  .card-title > button { flex: 0 1 auto; }
+  .card p, .hero p, .meal-info, .food-choice,
+  .history-copy, .settings-list dd { overflow-wrap: anywhere; }
+  .meal-shortcuts, .spread, .review-buttons, .dialog-actions { flex-wrap: wrap; }
+  .meal-info { min-width: 0; }
+  .meal-list { max-height: 360px; scroll-padding-block: 16px; }
+  .favorite, .close-button { min-width: 44px; min-height: 44px; }
+  .review-buttons > .secondary { flex: 1 1 180px; min-width: 0; }
+  .review-buttons .icon { width: 22px; height: 22px; }
+  .soft-banner { padding: 12px; }
+  .soft-banner > span { font-size: 1rem; line-height: 1.5; }
+  .soft-banner > button { margin-left: 0; }
+  .water-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .water-actions > button { padding: 10px 8px; }
+  .water-actions > .text-button { grid-column: 1 / -1; }
+  .water-visual { gap: 14px; }
+  .water-visual > div:last-child { min-width: 0; flex: 1; }
+  .water-drop { width: 60px; flex-shrink: 0; }
+  .stat-card { min-height: 0; padding: 16px; }
+  .stat-card > span { font-size: .9375rem; line-height: 1.5; flex-wrap: wrap; }
+  .stat-card strong { font-size: 2rem; }
+  .stat-card strong small, .water-visual strong small,
+  .weight-numbers strong small, .mini-stats strong small,
+  .large-value small { font-size: 1.0625rem; }
+  .stat-card p { overflow-wrap: anywhere; }
+  .mini-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .mini-stats > div:last-child { grid-column: 1 / -1; }
+  .mini-stats strong { font-size: 1.875rem; }
+  .mini-stats > div:last-child strong { font-size: 1.5rem; }
+  .mini-stats span { line-height: 1.5; }
+  .large-value, .water-visual strong { font-size: 2rem; line-height: 1.4; }
+  .fasting-card .large-value { font-size: 1.5rem; line-height: 1.4; }
+  .fast-status { flex-wrap: wrap; gap: 8px; }
+  .optional-tag { letter-spacing: .4px; }
+  .toggle-line { min-height: 44px; }
+  .toggle-line > span:first-child { min-width: 0; }
+  .toggle-line strong { font-size: 1rem; line-height: 1.5; }
+  .toggle-line > input { width: 56px; height: 44px; }
+  .toggle { flex: 0 0 48px; width: 48px; height: 30px; }
+  .toggle:before { width: 24px; height: 24px; }
+  .toggle-line input:checked + .toggle:before { transform: translateX(18px); }
+  .reminder strong { font-size: 1rem; line-height: 1.5; }
+  .weight-numbers { flex-wrap: wrap; gap: 18px; }
+  .weight-numbers strong { font-size: 1.875rem; }
+  .weight-chart text { font-size: 2.25rem; }
+  .chart-empty { min-height: 140px; height: auto; padding: 32px 0; }
+  .chart-empty > span { text-align: center; }
+  .form-row { flex-wrap: wrap; gap: 0 12px; }
+  .form-row > label { flex: 1 1 120px; }
+  .dialog-head h2 { min-width: 0; }
+  .dialog-actions { position: static; padding: 16px 0 0; }
+  .dialog-actions > button { flex: 1 1 120px; }
+  dialog { scroll-padding-block: 20px; }
+  .timer-banner > span { font-size: 1rem; line-height: 1.5; }
+  .food-choice { flex-wrap: wrap; }
+  .settings-list > div { flex-wrap: wrap; gap: 5px 14px; }
+  .settings-list dd { font-size: 1.0625rem; }
+  .trend-metric strong { font-size: 1.375rem; line-height: 1.4; }
+  .week-rhythm { display: grid; grid-template-columns: repeat(auto-fit, minmax(72px, 1fr)); gap: 16px 10px; }
+  .day-circle { width: 56px; height: 56px; font-size: 1.25rem; }
+  .fast-week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); text-align: center; }
+  .fast-week > span:first-child { grid-column: 1 / -1; text-align: left; }
+  .checkpoint-grid { grid-template-columns: 1fr; }
+  .checkpoint-grid strong small { font-size: 1.0625rem; }
+  .trend-table { font-size: 1rem; table-layout: fixed; }
+  .trend-table thead { font-size: .9375rem; }
+  .trend-table th, .trend-table td { white-space: normal; padding: 10px 6px; overflow-wrap: anywhere; }
+  footer { padding-top: 26px; line-height: 1.5; }
+  #toast { bottom: calc(124px + env(safe-area-inset-bottom, 0px)); line-height: 1.5; }
+
+  /* Reflow the hero instead of squeezing its type beside the ring. */
+  .hero { grid-template-columns: minmax(0, 1fr) 128px; gap: 12px 14px; padding: 20px 18px; }
+  .hero-copy { display: contents; }
+  .hero-tag { grid-column: 1 / -1; letter-spacing: .6px; }
+  .hero h2 { grid-column: 1 / -1; margin: 0; }
+  .hero-copy > p { grid-column: 1; grid-row: 3; align-self: center; max-width: none; }
+  .hero .primary.light { grid-column: 1 / -1; grid-row: 4; margin-top: 0; }
+  .consistency { grid-column: 2; grid-row: 3; min-width: 0; }
+  .score-ring { width: 128px; height: 128px; margin-inline: auto; }
+  .score-ring:after { width: 112px; height: 112px; }
+  .score-ring strong { font-size: 2.5rem; line-height: 1.1; }
+  .score-ring strong span { font-size: 1.0625rem; }
+  .score-ring small { max-width: 90px; margin: 5px auto 0; line-height: 1.4; }
+  .consistency > .rhythm-count { flex-wrap: wrap; white-space: normal; margin-top: 9px; }
+  .rhythm-count .icon { width: 18px; height: 18px; }
+  .hero > .hero-message { grid-column: 1 / -1; margin-top: 0; padding-top: 12px; }
+}
+@media (max-width: 360px) {
+  #main { padding-inline: 14px; }
+  .card { padding: 18px; }
+  .page-heading h1 { font-size: 1.75rem; }
+  .hero { padding-inline: 16px; column-gap: 12px; }
+}
+@media (max-width: 700px) {
+  .sleep-card > p:not(.source-label), .fasting-card > p:not(.source-label) {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+}
+/* The decorative hero illustration must never intercept a tap. */
+.hero-plant { pointer-events: none; }
+@media (max-width: 700px) {
+  #main { padding-top: env(safe-area-inset-top, 0px); }
+}
+@media (max-width: 700px) {
+  .hero > .hero-message, .reminder p { font-size: 1rem; line-height: 1.5; }
+}
