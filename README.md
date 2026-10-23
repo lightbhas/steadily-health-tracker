@@ -75,7 +75,7 @@ Home Screen and Safari can have separate storage. If your logs do not appear in 
 
 ## What works
 
-- Today prioritizes Movement, Food & Water, Fasting, and Sleep & Recovery, followed by the remaining habits, weight, and reviews. Movement shows saved steps against an editable daily goal with visual progress and quick timer access.
+- Today opens with a forest-green daily-rhythm banner and live log-based ring, followed by Movement, Food & Water, Fasting, and Sleep & Recovery, then the remaining habits, weight, and reviews. Pastel category cards show saved steps, an editable step goal, nutrition/hydration summaries, fasting progress, and manual sleep stages. Meal logging and water quick-add stay visible; expand the food tools for meal history, routine foods, favorites, custom water, and undo.
 - Meals have dates/times, names, descriptions, portions, notes, estimated nutrition, favorites, recent-meal reuse, editable routine foods, and compressed photo attachments. On iPhone, the file picker offers camera or library choices supported by Safari.
 - Post-meal prompts offer 10- or 15-minute timers, manual completion, skipping, and custom movement types. Timers can be cancelled. Recorded movement can be corrected in History.
 - Water: +250/+500 ml, custom quantity, undo latest on the selected day, editable reference, history corrections.

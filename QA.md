@@ -90,3 +90,17 @@ This pass changes presentation and wording only. The data schema, IndexedDB impl
 - A separate production origin reported “Offline shell ready.” After its server was stopped, the built app reloaded, saved a water entry, and retained it on another reload.
 - All browser write checks used separate local QA origins. The user's existing journal origin and records were untouched. No mockup values were seeded into the app. No push or deployment was performed.
 - Verification used desktop browser viewports, not a physical iPhone. Device-specific Safari installation, safe-area insets, and Dynamic Type behavior remain physical-device checks.
+
+
+## Dashboard reference refinement — 23 October 2026
+
+- Applied the supplied dashboard image to the real Today view: compact brand/date header, forest daily-rhythm banner with an actual logged-area ring, pale green Movement card, coral food summary, aqua fasting ring, lavender sleep stages, circular category icons, and a full-width navigation row. Kept the previously requested Movement → Food & Water → Fasting → Sleep order.
+- No changes to the model, database, schema, backups, privacy behavior, or service worker. All counts and visual progress use saved data. No reference-image values or sleep stages are seeded. Calories have no invented goal/progress target.
+- Kept primary step, walk, meal, and water actions visible. Existing detailed food/water controls are under an accessible native disclosure; its open state survives logging rerenders. The header date control continues to select past days.
+- All 26 automated tests, syntax checks for app/model/database, production build, and git diff whitespace checks passed.
+- Actual CSS widths 320, 375, 390, and 430 px had matching page/main scroll widths, no navigation label clipping, and no visible paragraph/control text below 15 px. The End fast action was approximately 46 px high and fully above navigation at each width. The full navigation occupies its own grid row with safe-area padding. Desktop at 1440 px uses two columns and had no horizontal overflow.
+- An isolated QA journal verified 4,100 steps against an edited 6,500 goal (63%), meal entry (550 kcal, 28 g protein, 7 g fiber), water quick-add and custom entry (exactly 1.125 L), a 10-minute walk timer and cancellation, and all navigation views at 320 px. Food tools stayed expanded after a water save.
+- Entered manual sleep stages (REM 90, Core 255, Deep 90, Awake 20 minutes) matched a 7 h 15 min sleep entry. A date with no sleep entry had no stage chart. No bedtime/waking-time labels are inferred from stage durations.
+- The fasting ring and bar reflected a partial fast, then capped at 100% when editing its start made the plan reached. The neutral reached message and End fast action remained available. The saved schedule remained 1–9 pm until explicitly edited.
+- Production shell readiness was confirmed on a separate origin. With its server stopped, the app reloaded, accepted a water entry, and retained it after another reload. No warnings/errors were observed in the final development journal checks.
+- User journal origins were not edited. Physical iPhone/Safari testing remains a device check. No push or deployment was performed. The user's local preview on port 5183 is left running; isolated QA servers are stopped after verification.
