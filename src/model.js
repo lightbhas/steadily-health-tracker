@@ -8,7 +8,7 @@ export function monthDeadline(day,months){
 }
 export function localStamp(day, time) { return new Date(`${day}T${time}:00+05:30`).toISOString(); }
 export function emptyState() {
- return {version:1, settings:{startWeight:110,goalWeight:90,waterGoal:2500,proteinGoal:100,startDate:dayKey(),checkpoints:[105,100,95],eatingStart:'13:00',eatingEnd:'21:00',fastingOptional:true,reminders:true,activitySource:'manual',foods:[['Rice',200,4,1],['Dal',180,10,5],['Vegetables',100,3,4],['Eggs',140,12,0],['Chicken',220,35,0],['Fish',180,28,0],['Dosa',170,4,1],['Idli',120,4,1],['Curd',100,5,0],['Salad',60,2,3],['Chicken shawarma',450,25,3]].map(([name,calories,protein,fiber])=>({name,calories,protein,fiber,portion:'1 serving (adjust to your portion)'}))}, days:{}, ...Object.fromEntries(kinds.map(k=>[k,[]])), activeFast:null, activeMovement:null};
+ return {version:1, settings:{stepGoal:8000,startWeight:110,goalWeight:90,waterGoal:2500,proteinGoal:100,startDate:dayKey(),checkpoints:[105,100,95],eatingStart:'13:00',eatingEnd:'21:00',fastingOptional:true,reminders:true,activitySource:'manual',foods:[['Rice',200,4,1],['Dal',180,10,5],['Vegetables',100,3,4],['Eggs',140,12,0],['Chicken',220,35,0],['Fish',180,28,0],['Dosa',170,4,1],['Idli',120,4,1],['Curd',100,5,0],['Salad',60,2,3],['Chicken shawarma',450,25,3]].map(([name,calories,protein,fiber])=>({name,calories,protein,fiber,portion:'1 serving (adjust to your portion)'}))}, days:{}, ...Object.fromEntries(kinds.map(k=>[k,[]])), activeFast:null, activeMovement:null};
 }
 export const sum = (items,key) => items.reduce((total,item)=>total+(Number(item[key])||0),0);
 export function summary(state,day=dayKey()) {
@@ -35,6 +35,7 @@ export function validateState(s) {
  for(const key of ['startWeight','goalWeight'])assert(numeric(cfg[key],20,500),'Weight goals must be between 20 and 500 kg.');
  assert(numeric(cfg.waterGoal,250,10000)&&numeric(cfg.proteinGoal,1,500),'Invalid water or protein goal.');
  assert(validDate(cfg.startDate),'Invalid starting date.');
+ if(cfg.stepGoal!==undefined)assert(numeric(cfg.stepGoal,1,100000)&&Number.isInteger(cfg.stepGoal),'Step goal must be a whole number from 1 to 100,000.');
  assert(Array.isArray(cfg.checkpoints)&&cfg.checkpoints.length===3&&cfg.checkpoints.every(n=>numeric(n,20,500)),'Invalid checkpoints.');
  for(const k of ['eatingStart','eatingEnd'])assert(/^([01]\d|2[0-3]):[0-5]\d$/.test(cfg[k]),'Invalid eating window.');
  for(const k of ['fastingOptional','reminders'])assert(typeof cfg[k]==='boolean','Invalid preferences.');
@@ -54,14 +55,25 @@ export function validateState(s) {
    if(kind==='weights')assert(numeric(r.kg,20,500)&&(r.waist===null||numeric(r.waist,20,300)),'Invalid body measurement.');
    if(kind==='exercise'||kind==='movements')assert(numeric(r.minutes,1,1440),'Invalid movement duration.');
    if(kind==='exercise')assert(typeof r.strength==='boolean','Invalid strength flag.');
-   if(kind==='sleep')assert(numeric(r.minutes,1,1440)&&['','poor','fair','good','excellent'].includes(r.quality),'Invalid sleep.');
+   if(kind==='sleep'){
+    assert(numeric(r.minutes,1,1440)&&['','poor','fair','good','excellent'].includes(r.quality),'Invalid sleep.');
+    if(r.stages!==undefined){
+     assert(r.stages&&typeof r.stages==='object'&&!Array.isArray(r.stages),'Invalid sleep stages.');
+     assert(Object.keys(r.stages).every(k=>Object.hasOwn(sleepStageNames,k)),'Unknown sleep stage.');
+     for(const value of Object.values(r.stages))assert(numeric(value,0,1440)&&Number.isInteger(value),'Sleep stage minutes must be whole numbers from 0 to 1,440.');
+     assert(['rem','core','deep'].reduce((n,k)=>n+(r.stages[k]??0),0)<=r.minutes,'REM, Core, and Deep together cannot exceed total sleep duration.');
+     assert(r.minutes+(r.stages.awake??0)<=1440,'Sleep plus Awake time cannot exceed 24 hours.');
+    }
+   }
    if(kind==='cravings')assert(numeric(r.intensity,1,5)&&typeof r.unplanned==='boolean','Invalid craving.');
+   if(kind==='fasts'&&r.plannedMinutes!==undefined&&r.plannedMinutes!==null)assert(numeric(r.plannedMinutes,1,1440),'Invalid planned fasting duration.');
    if(kind==='fasts')assert(Number.isFinite(Date.parse(r.start))&&Number.isFinite(Date.parse(r.end))&&Date.parse(r.end)>Date.parse(r.start)&&dayKey(new Date(r.end))===r.date,'Invalid fasting interval.');
   }
  }
  assert(typeof s.days==='object'&&!Array.isArray(s.days),'Invalid daily logs.');
  for(const [day,d] of Object.entries(s.days)){assert(validDate(day)&&d&&typeof d==='object','Invalid daily date.');if(d.steps!==undefined)assert(numeric(d.steps,0,100000)&&Number.isInteger(d.steps),'Steps must be a whole number.');if(d.sugar!==undefined)assert(typeof d.sugar==='boolean','Invalid sugar awareness.');for(const k of ['energy','hunger'])if(d[k]!==undefined)assert(numeric(d[k],1,5),'Invalid rating.');for(const k of ['sugarNote','intention','reflection'])if(d[k]!==undefined)assert(string(d[k]),'Invalid daily note.');}
  if(s.activeFast!==null)assert(s.activeFast&&Number.isFinite(Date.parse(s.activeFast.start))&&Date.parse(s.activeFast.start)<=Date.now(),'Invalid active fast.');
+ if(s.activeFast?.plannedMinutes!==undefined&&s.activeFast.plannedMinutes!==null)assert(numeric(s.activeFast.plannedMinutes,1,1440),'Invalid planned fasting duration.');
  if(s.activeMovement!==null)assert(s.activeMovement&&Number.isFinite(Date.parse(s.activeMovement.start))&&numeric(s.activeMovement.minutes,1,1440)&&string(s.activeMovement.type),'Invalid active movement.');
  return s;
 }
@@ -69,4 +81,32 @@ export function parseBackup(text){assert(text.length<100000000,'Backup exceeds t
 export function elapsedMinutes(start,end=new Date().toISOString()){return Math.max(0,(Date.parse(end)-Date.parse(start))/60000);}
 export function weightChange(state,days,end=dayKey()){
  const sorted=state.weights.filter(w=>w.date<=end).sort((a,b)=>a.date.localeCompare(b.date));const latest=sorted.at(-1);const baseline=sorted.filter(w=>w.date<=shiftDay(end,-days)).at(-1);return latest&&baseline?latest.kg-baseline.kg:null;
+}
+
+// Optional additions to v1: old records and backups remain valid without these fields.
+export function dailyStepGoal(settings) { return settings.stepGoal ?? 8000; }
+export function stepProgress(state, date = dayKey()) {
+ const steps = state.days[date]?.steps;
+ const goal = dailyStepGoal(state.settings);
+ return {steps, goal, percent:steps===undefined?0:Math.min(100,steps/goal*100),remaining:steps===undefined?null:Math.max(0,goal-steps)};
+}
+export function fastingPlanMinutes(settings) {
+ const minutes = time => { const [h,m]=time.split(':').map(Number); return h*60+m; };
+ const planned=(minutes(settings.eatingStart)-minutes(settings.eatingEnd)+1440)%1440;
+ return planned || null;
+}
+export function fastingProgress(state, now = new Date()) {
+ const active=state.activeFast;
+ const stamp=now instanceof Date?now.toISOString():now;
+ const target=active&&Object.hasOwn(active,'plannedMinutes')?active.plannedMinutes:(state.settings.fastingOptional?fastingPlanMinutes(state.settings):null);
+ const elapsed=active?elapsedMinutes(active.start,stamp):0;
+ return {active:!!active,elapsed,target,percent:active&&target?Math.min(100,elapsed/target*100):0,reached:!!active&&target!==null&&elapsed>=target,remaining:active&&target?Math.max(0,target-elapsed):null};
+}
+export const sleepStageNames={rem:'REM',core:'Core',deep:'Deep',awake:'Awake'};
+export function sleepStageSummary(record) {
+ if(!record?.stages || !Object.keys(record.stages).length)return null;
+ const entries=Object.entries(sleepStageNames).filter(([key])=>Object.hasOwn(record.stages,key)).map(([key,name])=>({key,name,minutes:record.stages[key]}));
+ const total=record.minutes+(record.stages.awake??0);
+ const logged=entries.reduce((n,entry)=>n+entry.minutes,0);
+ return {entries,total,logged,unentered:Math.max(0,total-logged)};
 }

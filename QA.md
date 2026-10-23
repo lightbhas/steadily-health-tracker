@@ -75,3 +75,18 @@ This pass changes presentation and wording only. The data schema, IndexedDB impl
 - Clicking the hero meal action was checked after making the decorative illustration ignore pointer events. Water quick-add/undo in an isolated test origin retained the same main scroll position (approximately 1,962 px). Switching views reset the main scroll position to zero. Original device logs were untouched.
 - Desktop at 1280 px retained the existing layout, normal document scrolling, hidden mobile navigation, and no horizontal overflow.
 - The supplied message did not include an accessible screenshot attachment. Verification used the current app, its existing layout, and the described readability/overlap problem; no physical iPhone was available.
+
+
+## Today priorities and manual sleep stages — 23 October 2026
+
+- Today now follows Movement → Food & Water → Fasting → Sleep & Recovery → remaining habits, weight, and reviews. The existing consistency score, meal shortcuts/photos/favorites, water controls, movement timers, sugar/cravings, weight history, and reviews are retained.
+- The database and schema version remain v1. Step goal, sleep stages, and fasting plan snapshots are optional additions. Legacy backups and active fasts without these fields remain valid; no destructive migration or replacement of stored records occurs.
+- All 26 automated tests passed (14 existing plus 12 new priority/progress/compatibility tests). All three source modules passed Node syntax checks. Production build passed.
+- Today was checked at actual CSS widths 320, 375, 390, 430, and desktop 1440 px. Page/main scroll width matched the available width; the fasting action remained fully visible and tappable. Mobile main content ended 10 px above the separate navigation row. Navigation labels use 17 px text and fit at 320 px; buttons are 64 px high.
+- On the isolated QA origin, 4,200 saved steps against an edited 6,000-step goal showed 70% progress and 1,800 remaining. Refresh retained the values. The movement timer started at 10:00 and completion saved a movement record.
+- Existing Rice quick-add saved nutrition and meal count correctly; water quick-add showed the actual saved total. Trends, History, Settings, and Today all remained accessible without horizontal overflow at 320 px. No browser error/warning logs appeared.
+- A fast starting the previous evening showed live elapsed time, capped 100% planned progress, and “Planned window reached. Choose whether to end now.” Ending was available. An early fast could also be ended within its first minute. The saved 1–9 pm schedule remained unchanged until explicitly edited; changing the test start to noon produced a 15-hour plan.
+- Manual REM/Core/Deep/Awake entries rendered only the supplied stages and labeled the chart as manual. Clearing all stage fields removed the chart while preserving sleep duration. The 320 px sleep dialog had no horizontal overflow and retained 17 px input text with approximately 50 px input heights.
+- A separate production origin reported “Offline shell ready.” After its server was stopped, the built app reloaded, saved a water entry, and retained it on another reload.
+- All browser write checks used separate local QA origins. The user's existing journal origin and records were untouched. No mockup values were seeded into the app. No push or deployment was performed.
+- Verification used desktop browser viewports, not a physical iPhone. Device-specific Safari installation, safe-area insets, and Dynamic Type behavior remain physical-device checks.

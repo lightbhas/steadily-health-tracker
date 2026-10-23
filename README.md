@@ -75,14 +75,14 @@ Home Screen and Safari can have separate storage. If your logs do not appear in 
 
 ## What works
 
-- Today combines estimated calories/protein/optional fiber, meal count, sugar awareness, post-meal movement, manual steps/exercise/sleep, water, optional fasting, weight, and a log-based consistency score.
+- Today prioritizes Movement, Food & Water, Fasting, and Sleep & Recovery, followed by the remaining habits, weight, and reviews. Movement shows saved steps against an editable daily goal with visual progress and quick timer access.
 - Meals have dates/times, names, descriptions, portions, notes, estimated nutrition, favorites, recent-meal reuse, editable routine foods, and compressed photo attachments. On iPhone, the file picker offers camera or library choices supported by Safari.
 - Post-meal prompts offer 10- or 15-minute timers, manual completion, skipping, and custom movement types. Timers can be cancelled. Recorded movement can be corrected in History.
 - Water: +250/+500 ml, custom quantity, undo latest on the selected day, editable reference, history corrections.
 - Added-sugar check-in, optional notes, cravings with intensity and unplanned-snack observations.
-- Manual steps, exercise, strength-session flag, previous-night sleep duration/quality/notes. One sleep entry per waking date; edit it to correct.
+- Manual steps, exercise, strength-session flag, previous-night sleep duration/quality/notes. Optional REM, Core, Deep, and Awake minutes can be entered manually from Apple Health / Watch. A stage chart appears only with entered data; missing stages are never estimated. One sleep entry per waking date; edit it to correct.
 - Weight and optional waist measurements, dated history and chart, weekly/monthly changes, monthly checkpoints and three-month aspiration.
-- Fasting start/edit-start/end, manual history, dates/times, duration, seven-day record consistency. Fasting duration never increases the daily score.
+- Fasting start/edit-start/end, manual history, dates/times, duration, seven-day record consistency. A live timer shows progress against the optional plan derived from the saved eating window. Edit the schedule on the card; end early or choose when to end after the plan is reached. Fasting duration never increases the daily score.
 - Morning overview and intentions; evening missing-log prompts, energy/hunger ratings, reflection; weekly and 30-day reviews.
 - Every record is editable and deletable from History. Delete, full reset, and replace-with-backup operations require in-app confirmation.
 - JSON export includes photos, settings, favorites, logs, and active timers. Import validates the entire backup before offering a replace confirmation. It replaces, rather than merges, data.
@@ -110,6 +110,7 @@ For app updates, export a backup, close all open Steadily tabs/Home Screen windo
 - `public/`: PWA manifest, icons, production service worker.
 - `scripts/`: dependency-free development server and production build.
 - `tests/model.test.mjs`: date-boundary, calculation, timer, and import tests.
+- `tests/priorities.test.mjs`: step goals, fasting plans, manual sleep stages, and legacy-backup compatibility tests.
 - `.github/workflows/pages.yml`: tests/build/deploy through GitHub Actions.
 
 See [QA.md](QA.md) for completed verification and device-specific follow-up checks.
